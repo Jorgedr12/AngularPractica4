@@ -1,0 +1,144 @@
+<div class="flex items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-12">
+    <div class="w-full max-w-lg">
+        <div class="bg-[#1c1c1c] border border-white/10 rounded-md p-8">
+
+            <div class="flex flex-col items-center text-center gap-3 mb-8">
+                <div>
+                    <p class="text-yellow-200 font-bold leading-tight">BancoSelect</p>
+                    <p class="text-xs text-gray-400">Create your accoun</p>
+                </div>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="space-y-5">
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">Full Name</label>
+                    <input formControlName="name" type="text" placeholder="Juan Pérez"
+                        class="w-full bg-[#333] border rounded-md px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                        {{name?.touched && name?.invalid? 'border-red-500 focus:ring-red-500/30': 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                    @if (name?.touched) {
+                    @if (name?.errors?.['required']) {
+                    <p class="text-red-400 text-xs mt-1.5">The name is required</p>
+                    }
+                    @else if (name?.errors?.['minlength']) { <p class="text-red-400 text-xs mt-1.5">Minimum 3 characters
+                    </p>
+                    }
+                    @else if (name?.errors?.['pattern']) { <p class="text-red-400 text-xs mt-1.5">Only letters and
+                        spaces</p>
+                    }
+                    }
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">
+                        Email Address
+                        @if (email?.pending) {
+                        <span class="text-yellow-200/60 normal-case font-normal ml-2 text-xs">loading...</span>
+                        }
+                    </label>
+                    <input formControlName="email" type="email" placeholder="tu@email.com"
+                        class="w-full bg-[#333] border rounded-md px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                    {{email?.touched && email?.invalid ? 'border-red-500 focus:ring-red-500/30' : email?.touched && email?.valid ? 'border-green-500/50 focus:ring-green-500/20' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                    @if (email?.touched && !email?.pending) {
+                    @if (email?.errors?.['required']) { <p class="text-red-400 text-xs mt-1.5">The email is required</p>
+                    }
+                    @else if (email?.errors?.['email']) { <p class="text-red-400 text-xs mt-1.5">Invalid email format
+                    </p> }
+
+                    @else if (email?.errors?.['emailTaken']) { <p class="text-red-400 text-xs mt-1.5">This email is
+                        already registered</p> }
+                    @else if (email?.valid) { <p class="text-green-400 text-xs mt-1.5">Email available</p> }
+                    }
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">Password</label>
+                    <div class="relative">
+                        <input formControlName="password" [type]="showPassword ? 'text' : 'password'"
+                            placeholder="••••••••"
+                            class="w-full bg-[#333] border rounded-md px-4 py-2.5 pr-16 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                            
+                        {{password?.touched && password?.invalid ? 'border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                        <button type="button" (click)="showPassword = !showPassword"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs transition-colors">
+                            {{ showPassword ? 'Ocultar' : 'Ver' }}
+                        </button>
+                    </div>
+                    @if (password?.touched) {
+                    @if (password?.errors?.['required']) { <p class="text-red-400 text-xs mt-1.5">The password is
+                        required</p> }
+                    @else if (password?.errors?.['minlength']) { <p class="text-red-400 text-xs mt-1.5">Minimum 8
+                        characters</p> }
+                    @else if (password?.errors?.['pattern']) { <p class="text-red-400 text-xs mt-1.5">Must have at least
+                        1 uppercase letter and 1 number</p> }
+                    }
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">Confirm Password</label>
+                    <div class="relative">
+                        <input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                            placeholder="••••••••"
+                            class="w-full bg-[#333] border rounded-md px-4 py-2.5 pr-16 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                        
+                        {{(confirmPassword?.touched && confirmPassword?.invalid) || passwordMismatch ? 'border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                        <button type="button" (click)="showConfirmPassword = !showConfirmPassword"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs transition-colors">
+                            {{ showConfirmPassword ? 'Ocultar' : 'Ver' }}
+                        </button>
+                    </div>
+                    @if (confirmPassword?.touched && confirmPassword?.errors?.['required']) {
+                    <p class="text-red-400 text-xs mt-1.5">Confirm your password</p>
+                    } @else if (passwordMismatch) {
+                    <p class="text-red-400 text-xs mt-1.5">Passwords do not match</p>
+                    }
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">Birth Date</label>
+                    <input formControlName="birthDate" type="date"
+                        class="w-full bg-[#333] border rounded-md px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 transition-all
+                    
+                    {{birthDate?.touched && birthDate?.invalid ? 'border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                    @if (birthDate?.touched) {
+                    @if (birthDate?.errors?.['required']) { <p class="text-red-400 text-xs mt-1.5">The date is required
+                    </p> }
+                    @else if (birthDate?.errors?.['minimumAge']) {
+                    <p class="text-red-400 text-xs mt-1.5">
+                        You must be at least 18 years old
+                    </p>
+                    }
+                    }
+                </div>
+
+                <div class="flex items-start gap-3 pt-1">
+                    <input formControlName="terminos" type="checkbox" id="terminos"
+                        class="mt-0.5 w-4 h-4 rounded border-white/20 bg-[#333] accent-yellow-200 cursor-pointer" />
+                    <label for="terminos" class="text-gray-400 text-sm leading-relaxed cursor-pointer">
+                        I accept the
+                        <span class="text-yellow-200 hover:text-yellow-100 transition-colors">terms and
+                            conditions</span>
+                        and the
+                        <span class="text-yellow-200 hover:text-yellow-100 transition-colors">privacy policy</span>
+                    </label>
+                </div>
+                @if (terminos?.touched && terminos?.invalid) {
+                <p class="text-red-400 text-xs -mt-3">You must accept the terms to continue</p>
+                }
+
+                <button type="submit" [disabled]="form.invalid || loading" class="w-full py-2.5 rounded-md font-semibold text-sm transition-all mt-2
+                bg-yellow-200 hover:bg-yellow-100 text-[#161618]
+                disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-[#555] disabled:text-gray-400">
+                    @if (loading) { Creating account... } @else { Create Account }
+                </button>
+
+                <p class="text-center text-gray-500 text-sm pt-2">
+                    Do you already have an account?
+                    <a routerLink="/login" class="text-yellow-200 hover:text-yellow-100 transition-colors ml-1">Sign
+                        in</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+</div>

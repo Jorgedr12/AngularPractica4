@@ -1,0 +1,82 @@
+<div class="flex items-center justify-center min-h-screen px-4 py-12">
+    <div class="w-full max-w-md">
+        <div class="bg-[#1c1c1c] border border-white/10 rounded-md p-8">
+
+            <div class="flex flex-col items-center text-center gap-1 mb-8">
+                <div>
+                    <p class="text-yellow-200 font-bold leading-tight">BancoSelect</p>
+                    <p class="text-xs text-gray-400">Access your account</p>
+                </div>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="space-y-5">
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">
+                        Email Address
+                    </label>
+                    <input 
+                        formControlName="email" 
+                        type="email" 
+                        placeholder="tu@email.com" 
+                        class="w-full bg-[#333] border rounded-md px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                        
+                        {{email?.touched && email?.invalid ? 'border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" />
+                        @if (email?.touched) {
+                            @if (email?.errors?.['required']) {
+                                <p class="text-red-400 text-xs mt-1.5">Email is required</p>
+                            } @else if (email?.errors?.['email']) {
+                                <p class="text-red-400 text-xs mt-1.5">Please enter a valid email address</p>
+                            }
+                        }
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase tracking-widest">
+                        Password
+                    </label>
+                    <div class="relative">
+                        <input 
+                            formControlName="password" 
+                            [type]="showPassword ? 'text' : 'password'"
+                            placeholder="••••••••" 
+                            class="w-full bg-[#333] border rounded-md px-4 py-2.5 pr-10 text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-1 transition-all
+                            
+                            {{password?.touched && password?.invalid ? 'border-red-500 focus:ring-red-500/30' : 'border-white/10 focus:ring-yellow-200/30 focus:border-yellow-200/50'}}" 
+                        />
+                            
+                        <button type="button" (click)="showPassword = !showPassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-sm transition-colors">
+                            {{ showPassword ? 'Hide' : 'Show' }}
+                        </button>
+                    </div>
+                    @if (password?.touched && password?.errors?.['required']) {
+                    <p class="text-red-400 text-xs mt-1.5">Password is required</p>
+                    } @else if (password?.touched && password?.errors?.['minlength']) {
+                    <p class="text-red-400 text-xs mt-1.5">Password must be at least 8 characters</p>
+                    }
+                </div>
+
+                @if (error) {
+                <div class="bg-red-950/40 border border-red-800/50 rounded-md px-4 py-3 text-red-400 text-sm">
+                    {{ error }}
+                </div>
+                }
+
+                <button type="submit" [disabled]="loading" class="w-full py-2.5 rounded-md font-semibold text-sm transition-all mt-2 bg-yellow-200 hover:bg-yellow-100 text-[#161618] disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (loading) {
+                    <span>Verifying...</span>
+                } @else {
+                    Sign In
+                }
+                </button>
+
+                <p class="text-center text-gray-500 text-sm pt-2">
+                    Don't have an account?
+                    <a routerLink="/register" class="text-yellow-200 hover:text-yellow-100 transition-colors ml-1">
+                        Sign up here
+                    </a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

@@ -103,7 +103,7 @@
                     @if (birthDate?.touched) {
                     @if (birthDate?.errors?.['required']) { <p class="text-red-400 text-xs mt-1.5">The date is required
                     </p> }
-                    @else if (birthDate?.errors?.['minimumAge']) {
+                    @else if (birthDate?.errors?.['tooYoung']) {
                     <p class="text-red-400 text-xs mt-1.5">
                         You must be at least 18 years old
                     </p>
